@@ -1,6 +1,6 @@
 <template>
-  <div class="app">
-    <router-view></router-view>
+  <div class="register">
+    注册
   </div>
 </template>
 
