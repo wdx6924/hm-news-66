@@ -7,6 +7,10 @@ import './style/iconfont.css'
 import router from './router/router.js'
 import hmHeader from './components/hmHeader.vue'
 import hmLogo from './components/hmLogo.vue'
+import axios from 'axios'
+
+Vue.prototype.$axios = axios
+axios.defaults.baseURL = 'http://localhost:3000'
 
 Vue.config.productionTip = false
 Vue.use(Button)

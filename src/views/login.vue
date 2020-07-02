@@ -12,7 +12,9 @@
         :rules="rules.password"
       />
       <div style="margin: 16px;">
-        <van-button round block type="info" native-type="submit">提交</van-button>
+        <van-button round block type="info" native-type="submit"
+          >登录</van-button
+        >
       </div>
     </van-form>
     <p class="tips">
@@ -23,8 +25,6 @@
 </template>
 
 <script>
-import axios from 'axios'
-
 export default {
   data() {
     return {
@@ -34,8 +34,8 @@ export default {
         username: [
           { required: true, message: '请填写用户名', trigger: 'onChange' },
           {
-            pattern: /^\d{3,6}$/,
-            message: '用户名为3-5位数字',
+            pattern: /^\d{5,11}$/,
+            message: '用户名为5-11位数字',
             trigger: 'onChange'
           }
         ],
@@ -50,9 +50,15 @@ export default {
       }
     }
   },
+  created() {
+    // console.log(this.$route)
+    const { username, password } = this.$route.params
+    this.username = username
+    this.password = password
+  },
   methods: {
     async onSubmit() {
-      const res = await axios.post('http://localhost:3000/login', {
+      const res = await this.$axios.post('/login', {
         username: this.username,
         password: this.password
       })
@@ -69,7 +75,7 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .login {
   .tips {
     font-size: 14px;
