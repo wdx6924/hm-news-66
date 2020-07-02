@@ -1,15 +1,83 @@
 <template>
   <div class="login">
-    登录
+    <hm-header>登录</hm-header>
+    <hm-logo></hm-logo>
+    <van-form @submit="onSubmit">
+      <van-field v-model="username" label="用户名" :rules="rules.username" />
+      <van-field
+        v-model="password"
+        type="password"
+        label="密码"
+        placeholder="请输入密码"
+        :rules="rules.password"
+      />
+      <div style="margin: 16px;">
+        <van-button round block type="info" native-type="submit">提交</van-button>
+      </div>
+    </van-form>
+    <p class="tips">
+      没有账号？去
+      <router-link to="/register">注册</router-link>
+    </p>
   </div>
 </template>
 
 <script>
-export default {
+import axios from 'axios'
 
+export default {
+  data() {
+    return {
+      username: '',
+      password: '',
+      rules: {
+        username: [
+          { required: true, message: '请填写用户名', trigger: 'onChange' },
+          {
+            pattern: /^\d{3,6}$/,
+            message: '用户名为3-5位数字',
+            trigger: 'onChange'
+          }
+        ],
+        password: [
+          { required: true, message: '请输入密码', trigger: 'onChage' },
+          {
+            pattern: /^\w{3,9}$/,
+            message: '密码必须是3-9位',
+            trigger: 'onChange'
+          }
+        ]
+      }
+    }
+  },
+  methods: {
+    async onSubmit() {
+      const res = await axios.post('http://localhost:3000/login', {
+        username: this.username,
+        password: this.password
+      })
+      const { statusCode, message, data } = res.data
+      console.log(data)
+      if (statusCode === 200) {
+        localStorage.setItem('token', data.token)
+        this.$router.push('/')
+      } else {
+        this.$toast.fail(message)
+      }
+    }
+  }
 }
 </script>
 
-<style>
-
+<style lang="less">
+.login {
+  .tips {
+    font-size: 14px;
+    text-align: right;
+    padding-right: 20px;
+    a {
+      color: rgb(240, 0, 0);
+    }
+  }
+}
 </style>
