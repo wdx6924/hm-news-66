@@ -62,11 +62,13 @@ export default {
         username: this.username,
         password: this.password
       })
+      console.log(res)
       const { statusCode, message, data } = res.data
       console.log(data)
       if (statusCode === 200) {
         localStorage.setItem('token', data.token)
-        this.$router.push('/')
+        localStorage.setItem('userId', data.user.id)
+        this.$router.push('/user')
       } else {
         this.$toast.fail(message)
       }
