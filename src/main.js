@@ -12,6 +12,8 @@ import hmLogo from './components/hmLogo.vue'
 import axios from 'axios'
 import hmNavbar from './components/hmNavbar.vue'
 import moment from 'moment'
+import hmPost from './components/hmPost.vue'
+import hmComment from './components/hmComment.vue'
 // axios设置
 Vue.prototype.$axios = axios
 // 自定义方法
@@ -48,11 +50,19 @@ Vue.config.productionTip = false
 Vue.component('hm-header', hmHeader)
 Vue.component('hm-logo', hmLogo)
 Vue.component('hm-navbar', hmNavbar)
+Vue.component('hm-post', hmPost)
+Vue.component('hm-comment', hmComment)
 // 自定义过滤器
-Vue.filter('time', function(input) {
-  return moment(input).format('YYYY-MM-DD')
+moment.locale('zh_CN')
+Vue.filter('time', function(input, str = 'YYYY-MM-DD') {
+  return moment(input).format(str)
 })
-
+Vue.filter('fromNow', function(input) {
+  return moment(input).fromNow()
+})
+// bus实例
+const bus = new Vue()
+Vue.prototype.$bus = bus
 // Vue实例
 new Vue({
   render: h => h(App),

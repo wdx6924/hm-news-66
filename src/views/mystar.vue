@@ -1,20 +1,7 @@
 <template>
   <div class="my-star">
     <hm-header>我的收藏</hm-header>
-    <div class="list">
-      <div class="item" v-for="item in list" :key="item.id">
-        <div class="content">
-          <p class="title">{{item.title}}</p>
-          <p>
-            <span>{{item.user.nickname}}</span>
-            <span>{{item.comments.length}}跟帖</span>
-          </p>
-        </div>
-        <div class="imgs">
-          <img :src="$url(item.cover[0].url)" alt />
-        </div>
-      </div>
-    </div>
+    <hm-post v-for="item in list" :key="item.id" :post="item"></hm-post>
   </div>
 </template>
 
@@ -31,10 +18,13 @@ export default {
   methods: {
     async getList() {
       const res = await this.$axios.get('/user_star')
-      console.log(res)
       const { statusCode, data } = res.data
       if (statusCode === 200) {
         this.list = data
+        console.log(data)
+        this.list.forEach(item => {
+          item.comment_length = item.comments.length
+        })
       }
     }
   }

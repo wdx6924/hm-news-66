@@ -10,7 +10,7 @@
         :immediate-check="false"
       >
         <div class="item" v-for="item in list" :key="item.id">
-          <p class="time">{{item.create_date}}</p>
+          <p class="time">{{item.create_date | time('YYYY-MM-DD HH:mm')}}</p>
           <div class="parent" v-if="item.parent">
             <p>回复：{{item.parent.user.nickname}}</p>
             <p>{{item.parent.content}}</p>
@@ -53,7 +53,7 @@ export default {
       console.log(res)
       const { statusCode, data } = res.data
       if (statusCode === 200) {
-        this.list = [...this.list, ...data]
+        this.list = [...data, ...this.list]
         if (data.length < 5) {
           this.finished = true
         }

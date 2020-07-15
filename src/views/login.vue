@@ -12,9 +12,7 @@
         :rules="rules.password"
       />
       <div style="margin: 16px;">
-        <van-button round block type="info" native-type="submit"
-          >登录</van-button
-        >
+        <van-button round block type="info" native-type="submit">登录</van-button>
       </div>
     </van-form>
     <p class="tips">
@@ -62,13 +60,24 @@ export default {
         username: this.username,
         password: this.password
       })
-      console.log(res)
       const { statusCode, message, data } = res.data
-      console.log(data)
       if (statusCode === 200) {
         localStorage.setItem('token', data.token)
         localStorage.setItem('userId', data.user.id)
-        this.$router.push('/user')
+        const backUrl = localStorage.getItem('backUrl')
+        // const back = this.$route.query
+        // console.log(back)
+        // if (back) {
+        //   this.$router.back()
+        // } else {
+        //   this.$router.push('/')
+        // }
+        if (backUrl) {
+          this.$router.push(backUrl)
+          localStorage.removeItem('backUrl')
+        } else {
+          this.$router.push('/user')
+        }
       } else {
         this.$toast.fail(message)
       }
